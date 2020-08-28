@@ -3,14 +3,14 @@
 const express = require('express');
 const path = require('path');
 const ReviewsService = require('./reviews-service');
-const { BasicAuth } = require('../middleware/basic-auth');
+const { requireAuth } = require('../middleware/jwt-auth');
 
 const reviewsRouter = express.Router();
 const jsonBodyParser = express.json();
 
 reviewsRouter
   .route('/')
-  .post(BasicAuth, jsonBodyParser, (req, res, next) => {
+  .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { thing_id, rating, text } = req.body;
     const user_id = req.user.id;
     const newReview = { thing_id, rating, text, user_id };
